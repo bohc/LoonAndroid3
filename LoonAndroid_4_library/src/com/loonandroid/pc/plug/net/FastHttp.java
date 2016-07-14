@@ -134,7 +134,7 @@ public class FastHttp {
 	public static ResponseEntity get(String url, LinkedHashMap<String, Object> params, InternetConfig config) {
 		config.setRequest_type(InternetConfig.request_get);
 		if (params != null) {
-			if (url.indexOf("\\?") != -1) {
+			if (url.indexOf("?") != -1) {
 				url = url + "?";
 			} else {
 				url = url + "&";
