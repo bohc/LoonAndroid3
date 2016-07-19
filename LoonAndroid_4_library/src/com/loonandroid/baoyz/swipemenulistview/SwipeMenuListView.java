@@ -187,6 +187,7 @@ public class SwipeMenuListView extends ListView {
 					mTouchView.smoothCloseMenu();
 				}
 				mTouchView = (SwipeMenuLayout) view;
+				
 				mTouchView.smoothOpenMenu();
 			}
 		}

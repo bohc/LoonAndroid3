@@ -253,7 +253,8 @@ public class Handler_String {
 	 * </pre>
 	 * 
 	 * @param str
-	 * @return if string is null or its size is 0 or it is made by space, return true, else return false.
+	 * @return if string is null or its size is 0 or it is made by space, return
+	 *         true, else return false.
 	 */
 	public static boolean isBlank(String str) {
 		return (str == null || str.trim().length() == 0);
@@ -290,6 +291,13 @@ public class Handler_String {
 	 */
 	public static String nullStrToEmpty(String str) {
 		return (str == null ? "" : str);
+	}
+
+	/** 处理字符串对像不能为空 */
+	public static String stringNotNull(Object str) {
+		if (str == null)
+			return "";
+		return str.toString().trim();
 	}
 
 	/**

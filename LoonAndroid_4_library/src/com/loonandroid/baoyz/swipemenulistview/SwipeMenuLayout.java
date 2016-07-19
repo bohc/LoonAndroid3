@@ -1,5 +1,7 @@
 package com.loonandroid.baoyz.swipemenulistview;
 
+import com.loonandroid.pc.adapter.ViewHolder;
+
 import android.content.Context;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.ScrollerCompat;
@@ -198,6 +200,10 @@ public class SwipeMenuLayout extends FrameLayout {
 		}
 		if (dis < 0) {
 			dis = 0;
+		}
+		ViewHolder o = (ViewHolder) mContentView.getTag();
+		if (!o.isSlide()) {
+			return;
 		}
 		mContentView.layout(-dis, mContentView.getTop(), mContentView.getWidth() - dis, getMeasuredHeight());
 		mMenuView.layout(mContentView.getWidth() - dis, mMenuView.getTop(), mContentView.getWidth() + mMenuView.getWidth() - dis, mMenuView.getBottom());

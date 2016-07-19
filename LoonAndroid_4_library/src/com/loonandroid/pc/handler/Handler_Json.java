@@ -47,6 +47,9 @@ public class Handler_Json {
 					}
 					return list;
 				}
+				if (str.equals("[]")) {
+					return list;
+				}
 				return list.add(str);
 			} else if (object instanceof JSONObject) {
 				JSONObject root = new JSONObject(str);
@@ -237,7 +240,6 @@ public class Handler_Json {
 		}
 	}
 
-
 	/**
 	 * json字符串转换为bean
 	 * 
@@ -258,15 +260,15 @@ public class Handler_Json {
 	}
 
 	@SuppressWarnings("unchecked")
-    public static <T> T  JsonToCollection(String str) {
+	public static <T> T JsonToCollection(String str) {
 		T object = null;
 		try {
 			object = (T) JsonToHashMap(str);
-        } catch (Exception e) {
-        }
+		} catch (Exception e) {
+		}
 		return object;
 	}
-	
+
 	/**
 	 * 解析内部类
 	 * 

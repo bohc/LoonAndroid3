@@ -26,6 +26,7 @@ public class ViewHolder {
 	private final SparseArray<View> mViews;
 	private int mPosition;
 	private View mConvertView;
+	private boolean slide = true;// 是否可以滑动
 
 	private ViewHolder(LayoutInflater layoutInflater, int layoutId, int position) {
 		this.mPosition = position;
@@ -134,4 +135,13 @@ public class ViewHolder {
 	public void setPosition(int mPosition) {
 		this.mPosition = mPosition;
 	}
+
+	public boolean isSlide() {
+		return slide;
+	}
+
+	public void setSlide(boolean slide) {
+		this.slide = slide;
+	}
+
 }
