@@ -193,6 +193,20 @@ public class Handler_String {
 		return sbf.toString();
 	}
 
+	
+	/**
+	 * 取字串中的数字
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static int fetchNumberFromString(String str) {
+		String regEx = "[^0-9]";
+		Pattern p = Pattern.compile(regEx);
+		Matcher m = p.matcher(str);
+		return Integer.parseInt(m.replaceAll("").trim());
+	}
+	
 	/**
 	 * 判断 char c 是汉字还是数字 还是字母
 	 * 

@@ -95,13 +95,66 @@ public class Handler_File {
 		}
 	}
 
+	public static StringBuilder readFileFromAssets(String filePath) {
+		return readFileFromAssets(filePath, null);
+	}
+
+	/**
+	 * read file
+	 * 
+	 * @param filePath
+	 * @return if file not exist, return null, else return content of file
+	 * @throws IOException
+	 *             if an error occurs while operator BufferedReader
+	 */
+	public static StringBuilder readFileFromAssets(String filePath, String encode) {
+		InputStream is = Handler_File.class.getResourceAsStream("/assets/" + filePath);
+		StringBuilder fileContent = new StringBuilder("");
+		InputStreamReader in = null;
+		BufferedReader reader = null;
+		try {
+			if (encode != null) {
+				in = new InputStreamReader(is, encode);
+			} else {
+				in = new InputStreamReader(is);
+			}
+			reader = new BufferedReader(in);
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				if (!fileContent.toString().equals("")) {
+					fileContent.append("\r\n");
+				}
+				fileContent.append(line);
+			}
+			reader.close();
+			return fileContent;
+		} catch (IOException e) {
+			throw new RuntimeException("IOException occurred. ", e);
+		} finally {
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+				if (in != null) {
+					in.close();
+				}
+				if (is != null) {
+					is.close();
+				}
+			} catch (IOException e) {
+				throw new RuntimeException("IOException occurred. ", e);
+			}
+		}
+	}
+
 	/**
 	 * write file
 	 * 
 	 * @param filePath
 	 * @param content
 	 * @param append
-	 *            is append, if true, write to the end of file, else clear content of file and write into it
+	 *            is append, if true, write to the end of file, else clear
+	 *            content of file and write into it
 	 * @return return true
 	 * @throws IOException
 	 *             if an error occurs while operator FileWriter
@@ -335,7 +388,8 @@ public class Handler_File {
 	}
 
 	/**
-	 * Creates the directory named by the trailing filename of this file, including the complete directory path required to create this directory. <br/>
+	 * Creates the directory named by the trailing filename of this file,
+	 * including the complete directory path required to create this directory. <br/>
 	 * <br/>
 	 * <ul>
 	 * <strong>Attentions:</strong>
@@ -344,9 +398,12 @@ public class Handler_File {
 	 * </ul>
 	 * 
 	 * @param filePath
-	 * @return true if the necessary directories have been created or the target directory already exists, false one of the directories can not be created.
+	 * @return true if the necessary directories have been created or the target
+	 *         directory already exists, false one of the directories can not be
+	 *         created.
 	 *         <ul>
-	 *         <li>if {@link Handler_File#getFolderName(String)} return null, return false</li>
+	 *         <li>if {@link Handler_File#getFolderName(String)} return null,
+	 *         return false</li>
 	 *         <li>if target directory already exists, return true</li>
 	 *         <li>return {@link java.io.File#makeFolder}</li>
 	 *         </ul>
@@ -386,7 +443,8 @@ public class Handler_File {
 	}
 
 	/**
-	 * Indicates if this file represents a directory on the underlying file system.
+	 * Indicates if this file represents a directory on the underlying file
+	 * system.
 	 * 
 	 * @param directoryPath
 	 * @return
@@ -563,12 +621,12 @@ public class Handler_File {
 		BufferedReader in = null;
 		try {
 			in = new BufferedReader(new FileReader(file));
-			String readString = "";
+			StringBuffer readString = new StringBuffer("");
 			String currentLine;
 			while ((currentLine = in.readLine()) != null) {
-				readString += currentLine;
+				readString.append(currentLine);
 			}
-			return readString;
+			return readString.toString();
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
@@ -592,6 +650,7 @@ public class Handler_File {
 			oos = new ObjectOutputStream(fos);
 			oos.writeObject(object);// 写入
 		} catch (Exception e) {
+			e.printStackTrace();
 			Ioc.getIoc().getLogger().e(fileName + "数据存储到文件错误" + object);
 		} finally {
 			try {

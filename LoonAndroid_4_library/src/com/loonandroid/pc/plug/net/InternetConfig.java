@@ -1,7 +1,7 @@
 package com.loonandroid.pc.plug.net;
 
-
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 import com.loonandroid.pc.plug.net.FastHttp.Progress;
@@ -21,7 +21,7 @@ public class InternetConfig {
 	final public static int request_file = 2;
 	final public static int request_webserver = 3;
 	final public static int request_form = 4;
-	
+
 	final public static int result_map = 0;
 	final public static int result_entity = 1;
 	final public static int result_String = 2;
@@ -79,7 +79,7 @@ public class InternetConfig {
 	 * 这个用来标记请求 可以让多个请求公用同一个callback
 	 */
 	private int key;
-	
+
 	private long all_length = 0;
 	/**
 	 * 表单上传进度
@@ -89,17 +89,23 @@ public class InternetConfig {
 	 * 是否支持离线
 	 */
 	private boolean isSave = false;
-	
+
 	/**
 	 * 缓存的时间(分钟)
 	 */
 	private int saveDate = -1;
-	
-	private static InternetConfig defaultConfig = new InternetConfig(){{
-		setCharset("utf-8");
-		setTime(30 * 1000);
-		setRequest_type(request_post);
-	}};
+	/**
+	 * 
+	 */
+	private WeakReference<Object> object;
+
+	private static InternetConfig defaultConfig = new InternetConfig() {
+		{
+			setCharset("utf-8");
+			setTime(30 * 1000);
+			setRequest_type(request_post);
+		}
+	};
 
 	public static InternetConfig defaultConfig() {
 		return defaultConfig;
@@ -183,11 +189,6 @@ public class InternetConfig {
 		this.content_type_web = content_type_web;
 	}
 
-	@Override
-	public String toString() {
-		return "InternetConfig [content_type_web=" + content_type_web + ", isHttps=" + isHttps + ", method=" + method  + ", charset=" + charset + ", time=" + time  + ", request_type=" + request_type + ", name_space=" + name_space + ", timeout=" + timeout + ", files=" + files + ", isCookies=" + isCookies + ", key=" + key + "]";
-	}
-
 	public HashMap<String, File> getFiles() {
 		return files;
 	}
@@ -200,7 +201,6 @@ public class InternetConfig {
 		return isHttps;
 	}
 
-	
 	public void setHttps(boolean isHttps) {
 		this.isHttps = isHttps;
 	}
@@ -244,4 +244,22 @@ public class InternetConfig {
 	public void setSaveDate(int saveDate) {
 		this.saveDate = saveDate;
 	}
+
+	public Object getObject() {
+		if (object == null) {
+			return null;
+		}
+		return object.get();
+	}
+
+	public void setObject(Object object) {
+		this.object = new WeakReference<Object>(object);
+	}
+
+	@Override
+	public String toString() {
+		return "InternetConfig [content_type_web=" + content_type_web + ", isHttps=" + isHttps + ", method=" + method + ", charset=" + charset + ", time=" + time + ", request_type=" + request_type + ", name_space=" + name_space + ", timeout=" + timeout + ", files=" + files
+				+ ", isCookies=" + isCookies + ", head=" + head + ", key=" + key + ", all_length=" + all_length + ", progress=" + progress + ", isSave=" + isSave + ", saveDate=" + saveDate + ", object=" + object.getClass().getSimpleName() + "]";
+	}
+
 }

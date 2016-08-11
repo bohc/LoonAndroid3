@@ -46,7 +46,7 @@ public class InstrumentationIoc extends Instrumentation {
 		// 保存一些数据
 		super.callActivityOnSaveInstanceState(activity, outState);
 	}
-
+	
 	@Override
 	public void callActivityOnPostCreate(Activity activity, Bundle icicle) {
 		super.callActivityOnPostCreate(activity, icicle);
