@@ -27,6 +27,7 @@ public class ViewHolder {
 	private int mPosition;
 	private View mConvertView;
 	private boolean slide = true;// 是否可以滑动
+	private int curTextColor;// 存储当前的文本字体颜色
 
 	private ViewHolder(LayoutInflater layoutInflater, int layoutId, int position) {
 		this.mPosition = position;
@@ -142,6 +143,14 @@ public class ViewHolder {
 
 	public void setSlide(boolean slide) {
 		this.slide = slide;
+	}
+
+	public int getCurTextColor() {
+		return curTextColor;
+	}
+
+	public void setCurTextColor(int curTextColor) {
+		this.curTextColor = curTextColor;
 	}
 
 }

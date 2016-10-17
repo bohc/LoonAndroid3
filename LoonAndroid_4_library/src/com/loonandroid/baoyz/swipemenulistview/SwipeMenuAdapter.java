@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.WrapperListAdapter;
 
@@ -20,12 +21,12 @@ import com.loonandroid.baoyz.swipemenulistview.SwipeMenuView.OnSwipeItemClickLis
  */
 public class SwipeMenuAdapter implements WrapperListAdapter, OnSwipeItemClickListener {
 
-	private ListAdapter mAdapter;
+	private BaseAdapter mAdapter;
 	private Context mContext;
 	private OnMenuItemClickListener onMenuItemClickListener;
 
 	public SwipeMenuAdapter(Context context, ListAdapter adapter) {
-		mAdapter = adapter;
+		mAdapter = (BaseAdapter) adapter;
 		mContext = context;
 	}
 

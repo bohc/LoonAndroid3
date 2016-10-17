@@ -152,6 +152,7 @@ public class AnalysisCore<T extends CommonEntity> implements Runnable {
 			return;
 		}
 		T t = this.process();
+		System.out.println("解析了："+clazz.getName());
 		Ioc.getIoc().setAnalysisEntity(clazz.getName(), t);
 		hasAnalysis.add(clazz);
 		// -----------------------------------------------------------------------------------

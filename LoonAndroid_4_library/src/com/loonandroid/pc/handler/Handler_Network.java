@@ -1,5 +1,10 @@
 package com.loonandroid.pc.handler;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -7,6 +12,7 @@ import android.telephony.TelephonyManager;
 
 /**
  * 网络工具类
+ * 
  * @author gdpancheng@gmail.com 2013-10-22 下午1:08:35
  */
 public class Handler_Network {
@@ -89,4 +95,23 @@ public class Handler_Network {
 		return isRoaming;
 	}
 
+	/* 检测当前网址是否可以连接 */
+	public static boolean checkURL(String url) {
+		boolean value = false;
+		try {
+			HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+			int code = conn.getResponseCode();
+			System.out.println(">>>>>>>>>>>>>>>> " + code + " <<<<<<<<<<<<<<<<<<");
+			if (code != 200) {
+				value = false;
+			} else {
+				value = true;
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return value;
+	}
 }

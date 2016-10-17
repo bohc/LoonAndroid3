@@ -21,7 +21,7 @@ public class AnalysisFragmentV4 extends AnalysisCore<FragmentV4Entity> implement
 	public FragmentV4Entity process() {
 		if (LoonConfig.instance().isDepend()&&null!=clazz.getAnnotation(InLayer.class)) {
 			BeanFactory.load(clazz, new Class[]{LoonFragment.class}, null);
-			Ioc.getIoc().getLogger().i(" fragment "+clazz+" 挂载完毕");
+			Ioc.getIoc().getLogger().i(" fragment "+clazz+" 挂载完毕v4");
 		}
 		return super.process();
 	}

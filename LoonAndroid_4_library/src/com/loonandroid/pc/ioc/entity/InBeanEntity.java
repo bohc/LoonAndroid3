@@ -78,7 +78,7 @@ public class InBeanEntity extends Invoker implements InjectInvoker {
 				invocationHandler.setAdapter(adapter);
 				field.setAccessible(true);
 				field.set(object.get() != null ? object.get() : beanObject, adapter);
-			} else if ((v4Fragment != null && v4Fragment.isAssignableFrom(type)) || fragment != null && fragment.isAssignableFrom(type)) {
+			} else if ((v4Fragment != null && v4Fragment.isAssignableFrom(type)) || (fragment != null && fragment.isAssignableFrom(type))) {
 				IocFragmentHandler invocationHandler = new IocFragmentHandler();
 				Object mFragment = BeanFactory.instanceFragment(type);
 				field.setAccessible(true);

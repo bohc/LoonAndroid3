@@ -1,13 +1,11 @@
 package com.loonandroid.pc.plug.net;
 
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
@@ -18,6 +16,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -1140,26 +1139,26 @@ public class FastHttp {
 		public void run() {
 			Message msg = new Message();
 			switch (internetConfig.getRequest_type()) {
-			case InternetConfig.request_post:
-				msg.obj = post(url, params, internetConfig);
-				break;
-			case InternetConfig.request_get:
-				msg.obj = get(url, params, internetConfig);
-				break;
-			case InternetConfig.request_file:
-				break;
-			case InternetConfig.request_webserver:
-				msg.obj = webServer(url, params, internetConfig, internetConfig.getMethod());
-				break;
-			case InternetConfig.request_form:
-				if (internetConfig.getProgress() != null) {
-					msg.obj = formProgress(url, params, internetConfig.getFiles(), internetConfig, internetConfig.getProgress());
-				} else {
-					msg.obj = form(url, params, internetConfig.getFiles(), internetConfig);
-				}
-				break;
-			default:
-				break;
+				case InternetConfig.request_post:
+					msg.obj = post(url, params, internetConfig);
+					break;
+				case InternetConfig.request_get:
+					msg.obj = get(url, params, internetConfig);
+					break;
+				case InternetConfig.request_file:
+					break;
+				case InternetConfig.request_webserver:
+					msg.obj = webServer(url, params, internetConfig, internetConfig.getMethod());
+					break;
+				case InternetConfig.request_form:
+					if (internetConfig.getProgress() != null) {
+						msg.obj = formProgress(url, params, internetConfig.getFiles(), internetConfig, internetConfig.getProgress());
+					} else {
+						msg.obj = form(url, params, internetConfig.getFiles(), internetConfig);
+					}
+					break;
+				default:
+					break;
 			}
 			mHandler.sendMessage(msg);
 		}
@@ -1192,19 +1191,19 @@ public class FastHttp {
 			while (mCallBack.getIsContinue()) {
 				Message msg = new Message();
 				switch (internetConfig.getRequest_type()) {
-				case InternetConfig.request_post:
-					msg.obj = post(url, params, internetConfig);
-					break;
-				case InternetConfig.request_get:
-					msg.obj = get(url, params, internetConfig);
-					break;
-				case InternetConfig.request_file:
-					break;
-				case InternetConfig.request_webserver:
-					msg.obj = webServer(url, params, internetConfig, internetConfig.getMethod());
-					break;
-				default:
-					break;
+					case InternetConfig.request_post:
+						msg.obj = post(url, params, internetConfig);
+						break;
+					case InternetConfig.request_get:
+						msg.obj = get(url, params, internetConfig);
+						break;
+					case InternetConfig.request_file:
+						break;
+					case InternetConfig.request_webserver:
+						msg.obj = webServer(url, params, internetConfig, internetConfig.getMethod());
+						break;
+					default:
+						break;
 				}
 				mHandler.sendMessage(msg);
 				try {
@@ -1284,16 +1283,24 @@ public class FastHttp {
 
 	public static String inputStreamToString(InputStream in, String charset) throws IOException {
 		StringBuffer out = new StringBuffer();
-//		BufferedReader input = new BufferedReader(new InputStreamReader(in, charset));
-//		String s;
-//		while ((s = input.readLine()) != null) {
-//			out.append(s);
-//		}
-		 byte[] b = new byte[4096];
-		 for (int n; (n = in.read(b)) != -1;) {
-		 out.append(new String(b, 0, n, charset));
-		 }
-		return out.toString();
+		// BufferedReader input = new BufferedReader(new InputStreamReader(in,
+		// charset));
+		// String s;
+		// while ((s = input.readLine()) != null) {
+		// out.append(s);
+		// }
+
+		Scanner scanner = new Scanner(in, charset);
+		String cont = scanner.useDelimiter("\\A").next();
+		System.out.println(cont);
+		scanner.close();
+		return cont;
+
+		// byte[] b = new byte[4096];
+		// for (int n; (n = in.read(b)) != -1;) {
+		// out.append(new String(b, 0, n, charset));
+		// }
+		// return out.toString();
 	}
 
 	private static String getXml(LinkedHashMap<String, Object> data, String method, String name_space) {

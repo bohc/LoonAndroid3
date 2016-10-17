@@ -2,11 +2,9 @@ package com.loonandroid.pc.ioc.entity;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.renderscript.Type;
 import android.support.v4.view.ViewPager;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -15,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
@@ -25,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 
+import com.loonandroid.baoyz.swipemenulistview.SwipeMenuListView;
 import com.loonandroid.pc.entity.CommonEntity;
 import com.loonandroid.pc.inject.InjectExcutor;
 import com.loonandroid.pc.interfaces.BeanFactory;
@@ -36,17 +34,18 @@ import com.loonandroid.pc.listener.OnClick;
 import com.loonandroid.pc.listener.OnListener;
 import com.loonandroid.pc.refresh.Pull;
 import com.loonandroid.pc.refresh.PullToRefreshBase;
+import com.loonandroid.pc.refresh.PullToRefreshBase.Mode;
+import com.loonandroid.pc.refresh.PullToRefreshBase.OnRefreshListener2;
 import com.loonandroid.pc.refresh.PullToRefreshExpandableListView;
 import com.loonandroid.pc.refresh.PullToRefreshGridView;
 import com.loonandroid.pc.refresh.PullToRefreshHorizontalScrollView;
 import com.loonandroid.pc.refresh.PullToRefreshListView;
 import com.loonandroid.pc.refresh.PullToRefreshScrollView;
+import com.loonandroid.pc.refresh.PullToRefreshSwipeListView;
 import com.loonandroid.pc.refresh.PullToRefreshVerticalViewPager;
 import com.loonandroid.pc.refresh.PullToRefreshViewPager;
 import com.loonandroid.pc.refresh.PullToRefreshWebView;
 import com.loonandroid.pc.refresh.VerticalViewPager;
-import com.loonandroid.pc.refresh.PullToRefreshBase.Mode;
-import com.loonandroid.pc.refresh.PullToRefreshBase.OnRefreshListener2;
 import com.loonandroid.pc.util.LoonConstant;
 
 /*
@@ -178,7 +177,7 @@ public class InViewEntity extends Invoker implements InjectInvoker {
 				// mPullRefreshView.setScrollingWhileRefreshingEnabled(true);
 				replaceView(view, mPullRefreshView.get());
 				view = mPullRefreshView.get().getRefreshableView();
-				
+
 				if (onListener != null) {
 					onListener.listener(mPullRefreshView.get(), pObject != null ? pObject.get() : object.get());
 				}
@@ -199,7 +198,8 @@ public class InViewEntity extends Invoker implements InjectInvoker {
 				}
 			}
 			/** 注入 **/
-			field.set(object.get(), view);
+			setField(field, view);
+			// field.set(object.get(), view);
 
 			if (null != mPullRefreshView && mPullRefreshView.get() != null) {
 				mPullRefreshView.get().setAuto(true);
@@ -211,6 +211,14 @@ public class InViewEntity extends Invoker implements InjectInvoker {
 		if (mPullRefreshView == null) {
 			// 当没有上拉刷新和下拉加载更多的时候，释放对于context的占用
 			this.object = null;
+		}
+	}
+
+	private void setField(Field field, View view) {
+		try {
+			field.set(object.get(), view);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -246,9 +254,12 @@ public class InViewEntity extends Invoker implements InjectInvoker {
 		return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private boolean creatPullRefreshView(View target) {
 		Class<? extends View> clazz = target.getClass();
-		if (ListView.class.isAssignableFrom(clazz)) {
+		if (SwipeMenuListView.class.isAssignableFrom(clazz)) {
+			mPullRefreshView = new WeakReference<PullToRefreshBase>(new PullToRefreshSwipeListView(target.getContext()));
+		} else if (ListView.class.isAssignableFrom(clazz)) {
 			mPullRefreshView = new WeakReference<PullToRefreshBase>(new PullToRefreshListView(target.getContext()));
 		} else if (ExpandableListView.class.isAssignableFrom(clazz)) {
 			mPullRefreshView = new WeakReference<PullToRefreshBase>(new PullToRefreshExpandableListView(target.getContext()));
@@ -264,7 +275,8 @@ public class InViewEntity extends Invoker implements InjectInvoker {
 			// if (VERSION.SDK_INT >= VERSION_CODES.GINGERBREAD) {
 			mPullRefreshView = new WeakReference<PullToRefreshBase>(new PullToRefreshWebView(target.getContext()));
 			// } else {
-			// mPullRefreshView = new PullToRefreshWebView2(target.getContext());
+			// mPullRefreshView = new
+			// PullToRefreshWebView2(target.getContext());
 			// }
 		} else if (ScrollView.class.isAssignableFrom(clazz)) {
 			mPullRefreshView = new WeakReference<PullToRefreshBase>(new PullToRefreshScrollView(target.getContext()));
@@ -387,7 +399,8 @@ public class InViewEntity extends Invoker implements InjectInvoker {
 
 	@Override
 	public String toString() {
-		return "InViewEntity [id=" + id + ", pull=" + pull + ", down=" + down + ", fieldName=" + fieldName + ", isActivity=" + isActivity + ", onListener=" + onListener + ", pObject=" + pObject + ", item=" + item + ", inVaEntity=" + inVaEntity + ", fill=" + fill + "]";
+		return "InViewEntity [id=" + id + ", pull=" + pull + ", down=" + down + ", fieldName=" + fieldName + ", isActivity=" + isActivity + ", onListener=" + onListener + ", pObject=" + pObject + ", item=" + item
+				+ ", inVaEntity=" + inVaEntity + ", fill=" + fill + "]";
 	}
 
 }
