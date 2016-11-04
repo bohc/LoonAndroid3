@@ -193,7 +193,6 @@ public class Handler_String {
 		return sbf.toString();
 	}
 
-	
 	/**
 	 * 取字串中的数字
 	 * 
@@ -206,7 +205,7 @@ public class Handler_String {
 		Matcher m = p.matcher(str);
 		return Integer.parseInt(m.replaceAll("").trim());
 	}
-	
+
 	/**
 	 * 判断 char c 是汉字还是数字 还是字母
 	 * 
@@ -506,5 +505,38 @@ public class Handler_String {
 			}
 		}
 		return new String(source);
+	}
+
+	/**
+	 * 根据需求截取字符串的长度
+	 * 
+	 * @param str
+	 * @param length
+	 * @return
+	 */
+	public static String subString(String str, int length) {
+		if (str == null || str.trim().equals(""))
+			return "";
+		if (str.length() <= length) {
+			return str;
+		}
+		return str.substring(0, length);
+	}
+
+	/**
+	 * 传入一个整数，如果整数小于传入的长度，那么前面用0补足
+	 * 
+	 * @param num
+	 * @return
+	 */
+	public static String jointNumUseZone(int num, int length) {
+		String pattern = "0";
+		if (length > 0) {
+			for (int i = 1; i < length; i++) {
+				pattern += "0";
+			}
+		}
+		java.text.DecimalFormat df = new java.text.DecimalFormat(pattern);
+		return df.format(num);
 	}
 }
